@@ -1,0 +1,8 @@
+.__blue__background{
+
+    background: linear-gradient(#004591,#1A2217) !important;
+}
+.__search__input:focus{
+    outline: none !important;
+    border: none;
+}
