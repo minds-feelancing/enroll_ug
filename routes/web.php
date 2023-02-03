@@ -24,6 +24,8 @@ Route::get("/",[CoreController::class,"home"])->name("home");
 Route::get("/login",[CoreController::class,"login"])->name("login");
 Route::get("/school/login",[SchoolStaffController::class , 'login'])->name('school.login');
 Route::post("authenticate",[CoreController::class,"authenticate"])->name('authenticate');
+Route::get("/Searched/school/{id}",[CoreController::class,"searchSchool"]);
+Route::post("/All_Schools",[CoreController::class,"schoolNameCheck"]);
 Route::post("school/authenticate",[SchoolStaffController::class,"authenticate"])->name('school.authenticate');
 
 

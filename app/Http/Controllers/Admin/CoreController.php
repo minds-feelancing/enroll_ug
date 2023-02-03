@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\School;
+use App\Models\SchoolSearch;
 use App\Models\SchoolCategory;
 use Illuminate\Http\Request;
+use App\Services\SearchManager;
 
 class CoreController extends Controller
 {
@@ -83,4 +85,93 @@ class CoreController extends Controller
 
 
         }
+
+
+        public function schoolNameCheck(Request $request)
+        {
+
+            //all empty
+            if(is_null($request->school_name)&&is_null($request->school_category)&&is_null($request->school_check)){
+                redirect()->back()->with('error','Search for the school');
+                //dd($related_schools);
+            }
+            //all Isnotempty
+            elseif(!is_null($request->school_name)&&!is_null($request->school_category)&&!is_null($request->school_check)){
+
+                $related_schools=SearchManager::SearchSchoolAll($request);
+
+                //dd($related_schools);
+
+            }
+            //school type is empty
+            elseif(!is_null($request->school_name)&&!is_null($request->school_category)&&is_null($request->school_check)){
+
+                $related_schools=SearchManager::SearchSchoolType($request);
+                //dd($related_schools);
+
+            }
+             //school category is empty
+             elseif(!is_null($request->school_name)&&is_null($request->school_category)&&!is_null($request->school_check)){
+
+                $related_schools=SearchManager::SearchSchoolCategory($request);
+                //dd($related_schools);
+            }
+
+             //school category and school type is empty
+             elseif(!is_null($request->school_name)&&is_null($request->school_category)&&is_null($request->school_check)){
+
+                $related_schools=SearchManager::SearchSchoolName($request);
+                //dd($related_schools);
+            }
+
+            //school type only
+            elseif(is_null($request->school_name)&&is_null($request->school_category)&&!is_null($request->school_check)){
+
+                $related_schools=SearchManager::ShowSchoolType($request);
+                //dd($related_schools);
+            }
+
+             //school category only
+             elseif(is_null($request->school_name)&&!is_null($request->school_category)&&is_null($request->school_check)){
+
+                $related_schools=SearchManager::ShowSchoolCategory($request);
+                //dd($related_schools);
+            }
+
+             //school category and school type
+             elseif(is_null($request->school_name)&&!is_null($request->school_category)&&!is_null($request->school_check)){
+
+                $related_schools=SearchManager::ShowSchoolCategoryAndType($request);
+                //dd($related_schools);
+            }
+
+
+            
+
+
+
+
+            $clientip = request()->ip();
+            // SchoolSearch::create([
+            //     'keyword' =>$request->school_name,
+            //     'category'=>$request->school_category,
+            //     'school_type'=>$request->school_check,
+            //     'ip_address'=>$clientip,
+            //     'user'=>auth()->check()? auth()->user()->id:'GUEST'
+            // ]);
+
+            //dd($related_schools);
+
+
+            return view('website.page_school',['related_schools'=>$related_schools]);
+        }
+
+        public function searchSchool($id){
+            //Sdd($id);
+            $theSchool = School::where('id',$id)
+            ->get()->first();
+
+            return view('website.searched_school',['theSchool'=>$theSchool]);
+        }
+
 }

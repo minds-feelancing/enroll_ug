@@ -46,16 +46,15 @@
             <p class="display-4 text-white  fw-bolder text-center ">
                 Find your next School!
             </p>
-            <form class="my-2" action="#" method="post">
+            <form class="my-2" action="/All_Schools" method="post">
                 <div class=" d-flex justify-content-center mb-3 align-items-center">
-                    
-                
+                    @csrf        
                     <div class="form-group col-md-3 col-sm-3 bg-white border-0 d-flex align-items-center px-2">
                         <i class="bi bi-geo-alt text-muted"></i>
-                        <input type="text"  class="form-control  border-0 form-control-lg rounded-0 p-2  __search__input" placeholder="Keywords...">
+                        <input type="text"  class="form-control  border-0 form-control-lg rounded-0 p-2  __search__input" id="school_name" name="school_name" placeholder="Keywords...">
                     </div>
                     <div class="form-group col-md-3 col-sm-3">
-                        <select name="" id="" class="form-control form-control-lg rounded-0 p-2">
+                        <select name="school_category" id="school_category" class="form-control form-control-lg rounded-0 p-2">
                             <option value="">All Categories</option>
                             @foreach($categories as $category)
                                 <option value="{{$category->id}}">{{$category->name}}</option>
@@ -63,20 +62,21 @@
                         </select>
                     </div>
                     <div class="form-group col-md-2 col-sm-2">
-                        <select name="" id="" class="form-control form-control-lg rounded-0 p-2">
+                        <select name="school_check" id="school_check" class="form-control form-control-lg rounded-0 p-2">
                             <option value="">All</option>
                             <option value="PRIVATE">Private</option>
                             <option value="GOVERNMENT">Government</option>
                             <option value="INTERNATIONAL">International</option>
                         </select>
                     </div>
-                </div>
+                </div>  
                 <div class="row justify-content-center p-2">
                     <div class="col-md-4 col-sm-4 ">
-                        <button type="submit" class="btn btn-warning rounded-pill text-center text-white w-100" > <i class="bi bi-search"></i> Search</button>
+                        <button type="submit" class="btn btn-warning rounded-pill text-center text-white w-100" id="search_school_name" > <i class="bi bi-search"></i> Search</button>
+                        <p id="result"></p>
                     </div>
-                </div>
-            </form>
+                </div>              
+            </form>        
         </div>
     </header>
     <section class="section-two bg-light p-3">
@@ -84,21 +84,46 @@
         <div class="container bg-light">
             <div class="row p-2">
                 @foreach($schools as $school)
-                <div class="card col-md-4 col-sm-4 rounded-0">
-                <img src="/storage/{{ $school->main_banner}}" class="card-img p-0 m-0 rounded-0" alt="...">
-                <div class="card-img-overlay">
-                    <h5 class="card-title text-light">{{ $school->name}}</h5>
-                </div>
-                    <div class="card-body p-2">
-
+                <a href="/Searched/school/{{ $school->id}}" class="card col-md-4 col-sm-4 rounded-0 mb-3">
+                    <img src="/storage/{{ $school->main_banner}}" class="card-img p-0 m-0 rounded-0" alt="...">
+                    <div class="card-img-overlay">
+                        <h5 class="card-title text-light">{{ $school->name}}</h5>
                     </div>
-                </div>
+                    <div class="card-body p-2">
+                        This is a school
+                    </div>
+                </a>
                 @endforeach
             </div>
         </div>
     </section>
 
 </main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+<script>
+    // $(document).ready(function(){
+    //     $("#search_school_name").click(function(){            
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: '/School_check_name',
+    //         data: {
+    //             school_name: $('#school_name').val(),
+    //         },
+    //         success: function(response) {
+    //             if (response.exist) {
+    //                 $(location).attr('href','/School/{exist.school_id}');
+    //                 //alert('yaa');
+    //                 $('#result').text(data + ' exists in the database.');
+    //             } else {
+    //                 $('#result').text( ' doesn\'t exist in the database.');
+    //             }
+    //         }
+            
+    //     });
+    //     });
+    // });
+</script>
 
 
 @endsection
