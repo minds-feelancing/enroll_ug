@@ -19,7 +19,7 @@
 <div class="container-fluid mt-5">
     <div class="row">
         @foreach($related_schools as $allschools)
-        <div class="" style="height:600px;">
+        <a href="/Searched/school/{{ $allschools->id}}" class="" style="height:600px;">
             <div class="card">
                 <img class="card-img-top"style="height: 400px;" src="/storage/{{ $allschools->main_banner}}" alt="Card image cap">
                 <div class="card-body">
@@ -27,7 +27,7 @@
                     <p class="card-text">Some quick example</p>
                 </div>
             </div>
-        </div>
+</a>
         @endforeach
     </div>
 </div>
