@@ -8,6 +8,7 @@ use App\Models\SchoolSearch;
 use App\Models\SchoolCategory;
 use Illuminate\Http\Request;
 use App\Services\SearchManager;
+use Illuminate\Support\Facades\DB;
 
 class CoreController extends Controller
 {
@@ -184,13 +185,29 @@ class CoreController extends Controller
 
         public function confirmPassword(Request $request)
         {
-        $password = $request->input('password');
-        $confirmPassword = $request->input('confirmPassword');
-        //dd($password);
-        if ($password != $confirmPassword) {
-            return "failure";
+            $password = $request->input('password');
+            $confirmPassword = $request->input('confirmPassword');
+            //dd($password);
+            if ($password != $confirmPassword) {
+                return "failure";
+            }
+            return "success";
         }
-        return "success";
+
+        public function checkEmail(Request $request)
+        {
+            //dd($request->email);
+
+
+            $emailExists = DB::table('users')
+            ->where('email', $request->email)
+            ->exists();
+
+            if ($emailExists) {
+                return response()->json(['error' => 'Email already exists']);
+            }
+
+            return response()->json(['success' => 'Email is available']);
         }
 
 }

@@ -15,31 +15,6 @@ class WizardController extends Controller
         return view('register');
     }
 
-    public function step1Store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'phonenumber' => 'required',
-        ]);
-        //dd($request->phonenumber);
-
-        $checkfirstname = $request->input('firstname');
-        $checklastname = $request->input('lastname');
-        $checkphonenumber = $request->input('phonenumber');
-
-        session(['storefirstname' => $checkfirstname]);
-        session(['storelastname' => $checklastname]);
-        session(['storephonenumber' => $checkphonenumber]);
-
-        return redirect('/SignUp/Step2');
-    }
-
-    public function SignUpstep2()
-    {
-        return view('secord_signUp');
-    }
-
     public function step2Store(Request $request)
     {
         $validatedData = $request->validate([
@@ -51,31 +26,24 @@ class WizardController extends Controller
             'phonenumber' => 'required',
         ]);
         //dd($request);
-        
-
-        $use_firstname = session('storefirstname');
-        $use_lastname = session('storelastname');
-        $use_phonenumber = session('storephonenumber');
 
         $selected_school = session('school_id');
         //dd($selected_school);
 
-        //dd($use_firstname);
+        User::create([
+            'email' =>$request->email,
+            'password'=>Hash::make($request->password), 
+            'firstName'=>$request->firstname,
+            'lastName'=>$request->lastname,
+            'phone_number'=>$request->phonenumber,
+            'type'=>'ADMIN',
+            'username'=>'Admin',
+        ]);
 
-            User::create([
-                'email' =>$request->email,
-                'password'=>Hash::make($request->password), 
-                'firstName'=>$request->firstname,
-                'lastName'=>$request->lastname,
-                'phone_number'=>$request->phonenumber,
-                'type'=>'ADMIN',
-                'username'=>'Admin',
-            ]);
+        $user = User::where('email', $request->email)->firstOrFail();
+        Auth::login($user);
 
-            $user = User::where('email', $request->email)->firstOrFail();
-            Auth::login($user);
-
-            return redirect()->route('searched_school',$selected_school);
+        return redirect()->route('searched_school',$selected_school);
     }
 
 }

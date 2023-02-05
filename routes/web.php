@@ -32,6 +32,7 @@ Route::get('/check-login-status', [CoreController::class,"checkLoginStatus"]);
 Route::post("school/authenticate",[SchoolStaffController::class,"authenticate"])->name('school.authenticate');
 Route::get("/Sign_Up",[CoreController::class,"SignUp"])->name('form.store');
 Route::post("/confirm_password",[CoreController::class,"confirmPassword"]);
+Route::post("/email/check",[CoreController::class,"checkEmail"]);
 
 
 
@@ -69,7 +70,5 @@ Route::get("/school/settings",[SchoolStaffController::class , 'settings'])->name
 
 
 Route::get("/SignUp/Step1",[WizardController::class , 'SignUpStep1'])->name('register');
-Route::post("/step1/store",[WizardController::class , 'step1Store']);
-Route::get("/SignUp/Step2",[WizardController::class , 'SignUpstep2']);
 Route::post("/step2/store",[WizardController::class , 'step2Store']);
 Route::get("/start/application/{id}",[SchoolApplicationController::class , 'create'])->name('start.application');

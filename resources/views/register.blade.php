@@ -33,6 +33,7 @@
           <div class="form-group">
             <label>Email</label>
             <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email" required>
+            <span id='email-error' style="color: red;"></span>
           </div>
           <div class="form-group">
             <label>Password</label>
@@ -121,9 +122,33 @@
         $("#email").removeClass('is-valid');
         $("#password").prop("disabled", true);
       } else {
-        $("#email").removeClass('is-invalid');
-        $("#email").addClass('is-valid');
-        $("#password").prop("disabled", false);
+
+        $.ajax({
+            type: 'POST',
+            url: '/email/check',
+            data: {
+                email: $("#email").val(), 
+                _token: '{{ csrf_token() }}'
+            },
+            success: function (data) {
+                if (data.error) {
+                    // Show error message
+                    $('#email-error').text(data.error);
+                    $('#email-error').removeClass('d-none');
+                    $("#email").removeClass('is-valid');
+                    $("#email").addClass('is-invalid');
+                    $("#password").prop("disabled", true);
+                    
+                } else {
+                    // Hide error message
+                    $('#email-error').addClass('d-none');
+                    $("#email").addClass('is-valid');
+                    $("#email").removeClass('is-invalid');
+                    $("#password").prop("disabled", false);
+                }
+            }
+        });
+
       }
     });
 
@@ -149,9 +174,9 @@
           type: "POST",
           url: "/confirm_password",
           data: { 
-                  password: $("#password").val(), 
-                  confirmPassword: $("#confirmPassword").val(),
-                  '_token': $('input[name=_token]').val()
+            password: $("#password").val(), 
+            confirmPassword: $("#confirmPassword").val(),
+            '_token': $('input[name=_token]').val()
           },
           success: function(response) {
             if (response == "success") {
