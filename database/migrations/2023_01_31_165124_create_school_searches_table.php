@@ -9,12 +9,11 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
+     * $clientip = request()->ip();
      * @return void
      */
     public function up()
     {
-        $clientip = request()->ip();
         Schema::create('school_searches', function (Blueprint $table) {
             $table->id();
             $table->string('keyword')->unique();

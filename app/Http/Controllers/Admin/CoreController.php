@@ -25,7 +25,10 @@ class CoreController extends Controller
         }
 
 
-        public function login(){
+        public function login(Request $request){
+
+            $id = $request->query('id');
+            //dd($id);
 
             return view('login');
         }
@@ -92,7 +95,7 @@ class CoreController extends Controller
 
             //all empty
             if(is_null($request->school_name)&&is_null($request->school_category)&&is_null($request->school_check)){
-                redirect()->back()->with('error','Search for the school');
+                return redirect()->back()->with('error','Search for the school');
                 //dd($related_schools);
             }
             //all Isnotempty
@@ -146,19 +149,14 @@ class CoreController extends Controller
             }
 
 
-            
-
-
-
-
             $clientip = request()->ip();
-            // SchoolSearch::create([
-            //     'keyword' =>$request->school_name,
-            //     'category'=>$request->school_category,
-            //     'school_type'=>$request->school_check,
-            //     'ip_address'=>$clientip,
-            //     'user'=>auth()->check()? auth()->user()->id:'GUEST'
-            // ]);
+            SchoolSearch::create([
+                'key_word' =>$request->school_name,
+                'category'=>$request->school_category,
+                'school_type'=>$request->school_check,
+                'ip_address'=>$clientip,
+                'user'=>auth()->check()? auth()->user()->id:'GUEST'
+            ]);
 
             //dd($related_schools);
 
@@ -172,6 +170,27 @@ class CoreController extends Controller
             ->get()->first();
 
             return view('website.searched_school',['theSchool'=>$theSchool]);
+        }
+
+        public function checkLoginStatus()
+        {
+            return response()->json(['loggedIn' => auth()->check()]);
+        }
+
+        public function SignUp(){
+
+            return view('register');
+        }
+
+        public function confirmPassword(Request $request)
+        {
+        $password = $request->input('password');
+        $confirmPassword = $request->input('confirmPassword');
+        //dd($password);
+        if ($password != $confirmPassword) {
+            return "failure";
+        }
+        return "success";
         }
 
 }

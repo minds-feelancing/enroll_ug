@@ -6,7 +6,9 @@ use App\Http\Controllers\SchoolCategoryController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolFormQuestionController;
 use App\Http\Controllers\SchoolStaffController;
+use App\Http\Controllers\SchoolApplicationController;
 use App\Models\School;
+use App\Http\Controllers\WizardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,9 +26,12 @@ Route::get("/",[CoreController::class,"home"])->name("home");
 Route::get("/login",[CoreController::class,"login"])->name("login");
 Route::get("/school/login",[SchoolStaffController::class , 'login'])->name('school.login');
 Route::post("authenticate",[CoreController::class,"authenticate"])->name('authenticate');
-Route::get("/Searched/school/{id}",[CoreController::class,"searchSchool"]);
+Route::get("/Searched/school/{id}",[CoreController::class,"searchSchool"])->name('searched_school');
 Route::post("/All_Schools",[CoreController::class,"schoolNameCheck"]);
+Route::get('/check-login-status', [CoreController::class,"checkLoginStatus"]);
 Route::post("school/authenticate",[SchoolStaffController::class,"authenticate"])->name('school.authenticate');
+Route::get("/Sign_Up",[CoreController::class,"SignUp"])->name('form.store');
+Route::post("/confirm_password",[CoreController::class,"confirmPassword"]);
 
 
 
@@ -37,6 +42,7 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get("/applications",[CoreController::class,"applications"])->name("applications");
     Route::get("/logs",[CoreController::class,"logs"])->name("logs");
     Route::get("/support",[CoreController::class,"support"])->name("support");
+    
 
 
 
@@ -59,3 +65,11 @@ Route::get("/school/dashboard",[SchoolStaffController::class , 'dashboard'])->na
 Route::get("/school/applications",[SchoolStaffController::class , 'applications'])->name('school.applications')->middleware('school');
 Route::get("/school/transfers",[SchoolStaffController::class , 'transfers'])->name('school.transfers')->middleware('school');
 Route::get("/school/settings",[SchoolStaffController::class , 'settings'])->name('school.settings')->middleware('school');
+
+
+
+Route::get("/SignUp/Step1",[WizardController::class , 'SignUpStep1'])->name('register');
+Route::post("/step1/store",[WizardController::class , 'step1Store']);
+Route::get("/SignUp/Step2",[WizardController::class , 'SignUpstep2']);
+Route::post("/step2/store",[WizardController::class , 'step2Store']);
+Route::get("/start/application/{id}",[SchoolApplicationController::class , 'create'])->name('start.application');

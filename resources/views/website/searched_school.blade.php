@@ -68,9 +68,10 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Standard</a></li>
         <li><a href="#">Classes</a></li>
-        <li><a href="#">About Us</a></li>
+        <li><a href="#">About Us</a></li>        
       </ul>
     </div>
+    <a href="{{route('start.application',$theSchool->id)}}" class="btn btn-light-primary">Start Application</a>
   </div>
 </nav>
 
@@ -114,6 +115,25 @@
 <footer class="container-fluid bg-4 text-center">
   <p>About Us <a href="#">{{ $theSchool->website}}</a></p> 
 </footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#userstatus').click(function() {
+      $.ajax({
+        url: '/check-login-status',
+        success: function(data) {
+          if (data.loggedIn) {
+            alert('User is logged in');
+          } else {
+            var id = {{ $theSchool->id }};
+            window.location.href = "/SignUp/Step1?id=" + id;
+          }
+        }
+      });
+    });
+  });
+</script>
 
 </body>
 </html>
