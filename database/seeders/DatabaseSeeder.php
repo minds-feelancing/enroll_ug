@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        //\App\Models\User::factory(10)->create();
 
         // \App\Models\User::create([
         //     'username' => 'Admin',
@@ -32,17 +32,21 @@ class DatabaseSeeder extends Seeder
 
 
 
-            SchoolCategory::insert([
-                ['name' =>  'College'],
-                ['name' => 'Day Care'],
-                ['name' => 'Nursery'],
-                ['name' => 'International School'],
-                ['name' => 'Primary'],
-                ['name' => 'Secondary'],
-                ['name'  => 'Technical Institute'],
-                ['name' => 'Nursing School'],
-                ['name' => "University"]
-            ]);
+        //     SchoolCategory::insert([
+        //         ['name' =>  'College'],
+        //         ['name' => 'Day Care'],
+        //         ['name' => 'Nursery'],
+        //         ['name' => 'International School'],
+        //         ['name' => 'Primary'],
+        //         ['name' => 'Secondary'],
+        //         ['name'  => 'Technical Institute'],
+        //         ['name' => 'Nursing School'],
+        //         ['name' => "University"]
+        //     ]);
+
+
+
+     \App\Models\School::factory(20)->create();
     }
 }
 
